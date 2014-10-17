@@ -42,8 +42,8 @@ for index, record in enumerate(sequences):
 	nSeq += 1
 	
 
-	chain="index+1 %i, name = %s, ID = %s, length %i, with %i features\n"\
-		% (index, record.name, record.id, len(record.seq), len(record.features))
+	chain="index+1 %i, name = %s, ID = %s, annotations = %s, length %i,  with %i features\n"\
+		% (index, record.name, record.id, record.annotations, len(record.seq), len(record.features))
 	
 	writeInFile("NewFile.xml",chain)
 
