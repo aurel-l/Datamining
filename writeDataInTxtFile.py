@@ -36,8 +36,8 @@ for index, record in enumerate(sequences):
 	nSeq += 1
 	
 
-	chain="index %i, name = %s, ID = %s, length %i,  with %i features\n"\
-		% (index, record.name, record.id, len(record.seq), len(record.features))
+	chain="index %i, name = %s, ID = %s, description = %s, length %i,  with %i features\n"\
+		% (index, record.name, record.id, record.description, len(record.seq), len(record.features))
 	
 
 	
