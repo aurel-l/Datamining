@@ -9,9 +9,11 @@ import time
 
 
 # Creation et eciture du nouveau fichier
-def writeInFile(path,texte):
+def writeInFile(path,texte1,texte2,texte3):
 	newFile = open(path, "a") # fichier en ajout
-	newFile.writelines(texte)
+	newFile.writelines(texte1)
+	newFile.writelines(texte2)
+	newFile.writelines(texte3)
 	newFile.close()
 
 # Lecture du fichier
@@ -42,10 +44,28 @@ for index, record in enumerate(sequences):
 	nSeq += 1
 	
 
-	chain="index+1 %i, name = %s, ID = %s, annotations = %s, length %i,  with %i features\n"\
+	chain="index %i, name = %s, ID = %s, annotations = %s, length %i,  with %i features"\
 		% (index, record.name, record.id, record.annotations, len(record.seq), len(record.features))
 	
-	writeInFile("NewFile.xml",chain)
+
+	name ="index %i, name = %s, ID =%s"\
+		% (index, record.name, record.id)
+
+	taille ="length %i"\
+		% (len(record.seq))
+
+	features ="with %i features"\
+		% (len(record.features))
+
+	
+
+	fullName ="<",name," /> \n"
+	fullTaille="\t <",taille," />\n"
+	fullFeatures="\t\t <",features," />\n"
+	#FullTaille ="\t<",taille," />\n"
+
+
+	writeInFile("NewFile.xml",fullName,fullTaille,fullFeatures)
 
 	sys.stdout.write("\b" * 80
                      + 'analyzed {} sequences in {:.3f} seconds'.format(nSeq,
