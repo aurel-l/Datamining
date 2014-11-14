@@ -53,8 +53,14 @@ docs/_build/
 # PyBuilder
 target/
 
+# save
+*~
+
 # pdf
 *.pdf
 
 # data
 *.xml
+*.csv
+*.json
+*.dat
