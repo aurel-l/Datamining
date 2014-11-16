@@ -22,17 +22,15 @@ def seqGenerator():
         return SeqIO.parse(sys.stdin, 'uniprot-xml')
 
 
-def csvLine(n, sep='\t'):
+def csvLine(*values):
     """
-    Creates ready-to-be-formatted string in a csv format
-    :param n: number of placholder needed
-    :type n: int
-    :param sep: csv separator
-    :type sep: str
-    :returns string to be formatted
+    Creates a tab-separated csv-formatted string with the provided values
+    :param values: values to be put inside the csv line
+    :type values: tuple
+    :returns formatted string
     :rtype str
     """
-    return ('{}' + sep) * (n - 1) + '{}\n'
+    return (('{}\t') * (len(values) - 1) + '{}\n').format(*values)
 
 
 def infoForm(s):
@@ -43,7 +41,7 @@ def infoForm(s):
     :returns formatted string
     :rtype str
     """
-    return (csvLine(4)).format(
+    return csvLine(
         s.id,
         s.name,
         len(s),
@@ -65,7 +63,7 @@ def featForm(f, idSeq):
         length = len(f)
     except TypeError:
         length = None
-    return (csvLine(3)).format(
+    return csvLine(
         idSeq,
         f.type,
         length
