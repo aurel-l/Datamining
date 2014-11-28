@@ -95,10 +95,6 @@ for index, record in enumerate(sequences):
 """
 
 
-# fonction permettant de parcourir une sequence et de la comparer
-# avec le Stock des valeurs de Pi pour calculer son Pi moyen
-# entree : String de la sequence
-# sortie : doit retourner un Pi moyen
 def traitementSequence(seq):
 	"""
     Run a sequence and compare to all the amino acids stored on a dictionnary 
