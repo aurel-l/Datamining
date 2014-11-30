@@ -39,6 +39,9 @@ DictPhi = {
 	'X' : 6.1 ,
 }
 
+PositivCharge = []
+NegativCharge = []
+
 
 def affichage(DictPhi):
 	"""
@@ -125,13 +128,28 @@ def traitementSequence(seq):
 
 	return piMeanSeq
 
+def triCharge(sequence):
+	"""
+    Sort in two groups the sequences : Positiv or negativ
+    :param values: a sequence, here it is oneExempleSequenceTest
+    :type values: str
+    """
+	if(traitementSequence(sequence) > 7):
+		PositivCharge.append(sequence)
+		print 'This sequence add on the positiv group.'
+	else:
+		NegativCharge.append(sequence)
+		print 'This sequence add on the negativ group.'
+
 
 # MAIN
 
 #affichage(DictPhi)
 #print "Pi moyen est ",piMoyen(DictPhi)
 
+
 print "Le Pi moyen de la sequence",oneExempleSequenceTest,"\nest de : ",traitementSequence(oneExempleSequenceTest)
+triCharge(oneExempleSequenceTest)
 
 
 
