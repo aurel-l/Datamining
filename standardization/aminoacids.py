@@ -1,60 +1,55 @@
-_occurrences = {
-    'A': 0.078,
-    'C': 0.019,
-    'D': 0.053,
-    'E': 0.063,
-    'F': 0.039,
-    'G': 0.072,
-    'H': 0.023,
-    'I': 0.053,
-    'K': 0.059,
-    'L': 0.091,
-    'M': 0.023,
-    'N': 0.043,
-    'O': 0.0,
-    'P': 0.052,
-    'Q': 0.042,
-    'R': 0.051,
-    'S': 0.068,
-    'T': 0.059,
-    'U': 0.0,
-    'V': 0.066,
-    'W': 0.014,
-    'Y': 0.032
-}
+import scipy as sp
+
+_alphabet = 'ACDEFGHIKLMNOPQRSTUVWY'
+_nAA = len(_alphabet)
+_occurrences = sp.array([
+    7.8, 1.9, 5.3, 6.3, 3.9, 7.2, 2.3, 5.3, 5.9, 9.1, 2.3,
+    4.3, 0, 5.2, 4.2, 5.1, 6.8, 5.9, 0, 6.6, 1.4, 3.2
+]) / 100
+
+def _fillPlaceHolder(*aminoacids):
+    """
+    Computes the aminoacid occurrences corresponding to a placeholder letter
+    :param aminoacids: aminoacids that the placeholder replaces
+    :type values: tuple
+    :returns array with new aminoacid occurrences
+    :rtype numpy.ndarray
+    """
+    indices = [_alphabet.index(aa) for aa in aminoacids]
+    values = [_occurrences[i] for i in indices]
+    total = sp.sum(values)
+    array = sp.zeros(_nAA)
+    for (i, v) in zip(indices, values):
+        array[i] = v / total
+    return array
+
 _placeholders = {
-    'B': {
-        'R': _occurrences['R'] / (_occurrences['R'] + _occurrences['D']),
-        'D': _occurrences['D'] / (_occurrences['R'] + _occurrences['D'])
-    },
-    'Z': {
-        'Q': _occurrences['Q'] / (_occurrences['Q'] + _occurrences['E']),
-        'E': _occurrences['E'] / (_occurrences['Q'] + _occurrences['E'])
-    },
-    'J': {
-        'L': _occurrences['L'] / (_occurrences['L'] + _occurrences['I']),
-        'I': _occurrences['I'] / (_occurrences['L'] + _occurrences['I'])
-    },
+    'B': _fillPlaceHolder('R', 'D'),
+    'Z': _fillPlaceHolder('Q', 'E'),
+    'J': _fillPlaceHolder('L', 'I'),
     'X': _occurrences
 }
-_alphabet = list(_occurrences.keys())
-_extended = list(_placeholders.keys())
 
 def value(sequence):
     """
     Computes the proportion of every aminoacid in a sequence
     :param sequence: sequence to be analyzed
     :type values: Bio.SeqRecord.SeqRecord
-    :returns dict containing, for every aminoacid, its proportion in the sequence
-    :rtype dict
+    :returns array containing, for every aminoacid, its proportion in the sequence
+    :rtype numpy.ndarray
     """
-    results = {aa: 0 for aa in _occurrences}
+    results = sp.zeros(_nAA)
     for letter in sequence.seq:
-        if letter in _alphabet:
-            results[letter] += 1
-        elif letter in _extended:
-            for (letter, value) in _placeholders[letter].items():
-                results[letter] += value
-    length = len(sequence)
-    return {key: value / length for (key, value) in results.items()}
+        try:
+            index = _alphabet.index(letter)
+        except ValueError:
+            index = -1
+        if index != -1:
+            results[index] += 1
+        else:
+            try:
+                results += _placeholders[letter]
+            except KeyError:
+                pass
+    return results / len(sequence)
 
