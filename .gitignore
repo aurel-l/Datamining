@@ -64,3 +64,6 @@ target/
 *.csv
 *.json
 *.dat
+
+#modules
+Bio
