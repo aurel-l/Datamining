@@ -1,23 +1,24 @@
-import numpy as np
+import numpy as _np
+from os import path as _path
 
-# Helix, beta strand and turn score
+_structures = ['helix', 'strand', 'turn']
+sizeValues = len(_structures)
 
-    
 def value(sequence):
-    lengths = {
-        'helix': 0,
-        'strand': 0,
-        'turn': 0
-    }
+    results = _np.zeros(sizeValues)
     for f in sequence.features:
         try:
-            lengths[f.type] += len(f)
-        except KeyError:
+            results[_structures.index(f.type)] += len(f)
+        except ValueError:
             pass
-    total = len(s)
-    return np.array([
-        lengths['helix'] / total,
-        lengths['strand'] / total,
-        lengths['turn'] / total
-    ])
+    return results / len(sequence)
+
+def worker(pipe, length):
+    mm = _np.memmap(_path.join('warehouse', 'structures.dat'), dtype='float32', mode='w+', shape=(length, sizeValues))
+    i = 0
+    seq = pipe.recv()
+    while seq:
+        mm[i] = value(seq)
+        i += 1
+        seq = pipe.recv()
 
