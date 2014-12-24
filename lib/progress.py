@@ -15,17 +15,24 @@ class Progress:
         self.currentPercent = 0
         self._update()
 
-    def increment(self, value=1):
-        self.value += value
+    def setValue(self, value):
+        self.value = value
         update = False
-        if (self.value - (self.currentStep * self.stepSize)) >= self.stepSize:
+        if abs(
+            self.value - (self.currentStep * self.stepSize)
+        ) >= self.stepSize:
             self.currentStep = int(self.value / self.stepSize)
             update = True
-        if (self.value - (self.currentPercent * (self.endValue / 100))) >= 1:
+        if abs(
+            self.value - (self.currentPercent * (self.endValue / 100))
+        ) >= 1:
             self.currentPercent = int(self.value * 100 / self.endValue)
             update = True
         if update:
             self._update()
+
+    def increment(self, value=1):
+        self.setValue(self.value + value)
 
     def finish(self, ended=True):
         if ended:
@@ -39,3 +46,4 @@ class Progress:
         _stdout.write(
             self.template.format('#' * self.currentStep, self.currentPercent)
         )
+        _stdout.flush()

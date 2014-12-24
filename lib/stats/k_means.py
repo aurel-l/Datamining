@@ -1,6 +1,14 @@
 import numpy as _np
 
 
+class _Step:
+    def __init__(self, classes, n_loops, changes):
+        self.classes = classes
+        self.n_loops = n_loops
+        self.converged = (changes == 0)
+        self.changes = changes
+
+
 # Initialization function
 def _initialization(data, k, useElements, useQuasiRandom):
     #barycenters = _np.zeros((k, data.shape[1]))
@@ -60,7 +68,7 @@ def k_means(data, k, useElements=True, useQuasiRandom=False, useMedoids=False):
     lenData = data.shape[0]
     # Initialization step
     barycenters = _initialization(data, k, useElements, useQuasiRandom)
-    loops = 0
+    n_loops = 0
     changes = lenData
     classes = _np.zeros(
         lenData,
@@ -90,10 +98,5 @@ def k_means(data, k, useElements=True, useQuasiRandom=False, useMedoids=False):
                     bar = mean
                 barycenters[classIndex - 1] = bar
         # Partial result
-        loops += 1
-        yield {
-            'classes': classes,
-            'loops': loops,
-            'converged': changes == 0,
-            'changes': changes
-        }
+        n_loops += 1
+        yield _Step(classes, n_loops, changes)

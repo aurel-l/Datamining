@@ -10,6 +10,12 @@ from lib.progress import Progress as _Progress
 from lib.worker import Worker as _Worker
 
 
+class _Output:
+    def __init__(self, n_proteins, features):
+        self.n_proteins = n_proteins
+        self.features = features
+
+
 def _worker_fun(length, feature, pipe):
     module = _import_module('lib.features.{}'.format(feature))
 
@@ -54,7 +60,10 @@ def main(file_name, features=[], n_proteins=None, log=True):
     ) for feature in features]
 
     if log:
-        print('extracting data from {} proteins'.format(n_proteins))
+        print('extracting data from {} protein{}'.format(
+            n_proteins,
+            's' if n_proteins > 1 else ''
+        ))
         progress = _Progress(60, n_proteins)
 
     for (seq, i) in zip(
@@ -73,10 +82,7 @@ def main(file_name, features=[], n_proteins=None, log=True):
     if log:
         progress.finish()
 
-    return {
-        'n_proteins': n_proteins,
-        'features': features
-    }
+    return _Output(n_proteins, features)
 
 if __name__ == '__main__':
     try:

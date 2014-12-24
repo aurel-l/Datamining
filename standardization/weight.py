@@ -93,8 +93,13 @@ def calcul_weight(sequence):
 	for i in range (0,len(sequence)):
 		if (sequence[i] == 'B' ):
 
+<<<<<<< HEAD
 			# B --> R = 5.1 ou D = 5.3
 			
+=======
+			# B --> N = 4.3 ou D = 5.3
+			"""
+>>>>>>> 27275fa4be31ae428e42f5e6684aa84dc8f1a8a6
 			else if(sequence[i] == 'Z'):
 			# Z --> Q = 4.2 ou E = 6.3
 			
@@ -106,8 +111,7 @@ def calcul_weight(sequence):
 
 	return molecular_weight(sequence,"protein")
 
-
-
+# 
 
 
 

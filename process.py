@@ -34,7 +34,10 @@ def _reduce(length, feature):
 def main(features=[], n_proteins=1, log=True):
     dimensions = len(features)
     if log:
-        print('processing data from {} features'.format(dimensions))
+        print('processing data from {} feature{}'.format(
+            dimensions,
+            's' if dimensions > 1 else ''
+        ))
         progress = _Progress(60, dimensions * 2 + 1)
     sizes = _np.empty(dimensions, dtype=_np.uint8)
 
