@@ -75,7 +75,7 @@ def calculW(sequence):
     :returns weight of the sequence
     :rtype int
     """
-
+    
 	X = PA(str(sequence))
 	return X.molecular_weight()
 
@@ -88,30 +88,10 @@ def calcul_weight(sequence):
     :type values: Bio.SeqRecord.SeqRecord
     :returns weight of the sequence
     :rtype int
+    """
     
+    return molecular_weight(sequence,"protein")
 
-	for i in range (0,len(sequence)):
-		if (sequence[i] == 'B' ):
-
-<<<<<<< HEAD
-			# B --> R = 5.1 ou D = 5.3
-			
-=======
-			# B --> N = 4.3 ou D = 5.3
-			"""
->>>>>>> 27275fa4be31ae428e42f5e6684aa84dc8f1a8a6
-			else if(sequence[i] == 'Z'):
-			# Z --> Q = 4.2 ou E = 6.3
-			
-			else if(sequence[i] == 'J'):
-			# J --> L = 9.1 ou I = 5.3
-
-			else:
-			"""
-
-	return molecular_weight(sequence,"protein")
-
-# 
 
 
 
