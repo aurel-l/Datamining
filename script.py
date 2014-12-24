@@ -7,6 +7,6 @@ from cluster import main as cluster
 file_name = 'data.xml'
 features = ['aminoacids', 'structure', 'length']
 
-output = extract(file_name, features, log=True)
-process(features, output['n_proteins'], log=True)
-#cluster()
+output = extract(file_name, features)
+matrix = process(features, output.n_proteins)
+classes = cluster(matrix, 50)
