@@ -25,9 +25,9 @@ def _fill_placeholder(aminoacids):
     return array
 
 _placeholders = {
-    'B': _fill_placeholder('RD'),
-    'Z': _fill_placeholder('QE'),
-    'J': _fill_placeholder('LI'),
+    'B': _fill_placeholder('DN'),
+    'Z': _fill_placeholder('EQ'),
+    'J': _fill_placeholder('IL'),
     'X': _occurrences
 }
 

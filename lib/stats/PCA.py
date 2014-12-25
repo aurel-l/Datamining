@@ -22,7 +22,7 @@ class PCA:
         else:
             raise ValueError('Incorrect number of dimensions')
 
-    def confidence(self, k=1):
+    def information(self, k=1):
         if (k > 0) and (k <= self.n_dim):
             total = _np.sum([eig.value for eig in self.eig])
             portion = _np.sum([eig.value for eig in self.eig[:k]])

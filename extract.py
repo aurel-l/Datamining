@@ -7,30 +7,16 @@ import os as _os
 from importlib import import_module as _import_module
 
 from lib.progress import Progress as _Progress
-from lib.worker import Worker as _Worker
 
 
 class _Output:
-    def __init__(self, n_proteins, features):
+    def __init__(self, n_proteins, features, extract):
         self.n_proteins = n_proteins
         self.features = features
+        self.extract = extract
 
 
-def _worker_fun(length, feature, pipe):
-    module = _import_module('lib.features.{}'.format(feature))
-
-    mm = _np.memmap(
-        'warehouse{}{}.dat'.format(_os.path.sep, feature),
-        dtype=_np.float64,
-        mode='w+',
-        shape=(length, module.size_values)
-    )
-    for i in range(length):
-        mm[i] = module.value(pipe.recv())
-    pipe.close()
-
-
-def main(file_name, features=[], n_proteins=None, log=True):
+def main(file_name, extract_lambda, features=[], n_proteins=None, log=True):
     if not n_proteins:
         # Tries to get the number of proteins in the file if not provided
         try:
@@ -54,10 +40,18 @@ def main(file_name, features=[], n_proteins=None, log=True):
         # already exists
         _os.system('rm warehouse/*.dat 2> /dev/null')
 
-    workers = [_Worker(
-        target=_worker_fun,
-        args=[n_proteins, feature]
-    ) for feature in features]
+    modules = [
+        _import_module('lib.features.{}'.format(feature))
+        for feature in features
+    ]
+    memmaps = [
+        _np.memmap(
+            'warehouse{}{}.dat'.format(_os.path.sep, feature),
+            dtype=_np.float64,
+            mode='w+',
+            shape=(n_proteins, module.size_values)
+        )
+        for (feature, module) in zip(features, modules)]
 
     if log:
         print('extracting data from {} protein{}'.format(
@@ -66,23 +60,22 @@ def main(file_name, features=[], n_proteins=None, log=True):
         ))
         progress = _Progress(60, n_proteins)
 
+    extracted = []
     for (seq, i) in zip(
         _parse(open(file_name, encoding='utf-8'), 'uniprot-xml'),
         range(n_proteins)
     ):
-        for w in workers:
-            w.feed(seq)
+        for (module, memmap) in zip(modules, memmaps):
+            memmap[i] = module.value(seq)
+        if extract_lambda:
+            extracted.append(extract_lambda(seq))
         if log:
             progress.increment()
-
-    # clean up processes and pipes
-    for w in workers:
-        w.join()
 
     if log:
         progress.finish()
 
-    return _Output(n_proteins, features)
+    return _Output(n_proteins, features, extracted)
 
 if __name__ == '__main__':
     try:
