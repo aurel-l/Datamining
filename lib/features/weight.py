@@ -77,7 +77,7 @@ def value(sequence):
     :rtype array[float]
     """
 
-    #Always bug :(
+    #Always bug for unknown aminoacids :(
 
 	return [molecular_weight(sequence,"protein")/length.value(sequence)]
 
