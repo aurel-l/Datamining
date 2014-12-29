@@ -1,24 +1,12 @@
-# -*- coding: utf-8 -*-
-
 size_values = 1
 
-# sequence.next()
+
 def value(sequence):
     """
-    Calcul the weight of the input sequence
+    Computes the mean weight of the input sequence's aminoacids
     :param values: input sequence
     :type values: Bio.SeqRecord.SeqRecord
-    :returns weight of the sequence
+    :returns array with one value, the relative weight of the sequence's aa
     :rtype array[int]
     """
-
-    mass = sequence.annotations["sequence_mass"]
-    return [mass/len(sequence.seq)]
-    
-    
-
-
-
-
-
-
+    return [sequence.annotations["sequence_mass"] / len(sequence)]

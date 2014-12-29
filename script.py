@@ -5,7 +5,7 @@ from process import main as process
 from cluster import main as cluster
 
 file_name = 'data.xml'
-features = ['aminoacids', 'structure', 'length']
+features = ['aminoacids', 'structure', 'weight', 'length']
 n_clusters = 50
 
 extract_output = extract(
@@ -14,8 +14,12 @@ extract_output = extract(
     extract_lambda=lambda s: s.name
 )
 process_output = process(features, extract_output.n_proteins)
-for (f, i) in zip(features, process_output.informations):
-    print('kept {:7.2%} of information in {} feature'.format(i, f))
+for (i, d, f) in zip(
+    process_output.informations,
+    process_output.original_dimensions,
+    features
+):
+    print('kept {:7.2%} of information in {:2}-dimensional feature "{}"'.format(i, d, f))
 classes = cluster(process_output.matrix, n_clusters)
 print('class counts')
 count = [(classes == (i + 1)).sum() for i in range(n_clusters)]
