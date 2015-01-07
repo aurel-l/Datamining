@@ -1,19 +1,11 @@
-#!/usr/bin/python3
 # -*- coding: utf-8 -*-
 
-# If the Phi is greather than the pH, the molecule will have a positive charge
-# pI is the pH value when the net charge of the molecule is null
-# 3 cat are defined : 
-#    - "acide" : Asp, Glu
-#    - "basic" : Lys, Arg, His
-#    - "neutre" : the others
+
+#  run but break for a bug unknown for the moment...
+
 
 import numpy as np
 from Bio import SeqIO
-import sys
-import time
-
-begin = time.time()
 
 DictPhi = {
 	'A' : 6.0 ,
@@ -37,20 +29,14 @@ DictPhi = {
 	'D' : 3.0 ,
 	'E' : 3.2 ,
 	'X' : 6.1 ,
+	'B' : 4.2 ,
+	'Z' : 4.45 ,
+	'J' : 6.05
 }
 
-PositivCharge = []
-NegativCharge = []
+_PositivCharge = []
+_NegativCharge = []
 
-
-def affichage(DictPhi):
-	"""
-    Display a dictionary
-    :param values: dictionary containing all de pi values for each amino acids
-    :type values: dictionary data type
-    """
-	for cle, values in DictPhi.items():
-		print "L'acide amine",cle," a comme Phi ",values
 
 
 def piMoyen(DictPhi):
@@ -70,35 +56,7 @@ def piMoyen(DictPhi):
 	return piM
 
 
-# An exemplary sequence to be treated
-oneExempleSequenceTest = 'MAVVLPAVVEELLSEMAAAVQESARIPDEYLLSLKFLFGSSATQALDLVDRQSITLISSPSGRRVYQVLGSSSKTYTCLASCHYCSCPAFAFSVLRKSDSILCKHLLAVYLSQVMRTCQQLSVSDKQLTDILLMEKKQEA'
-otherExample = "MSGPVPSRARVYTDVNTHRPREYWDYESHVVEWGNQDDYQLVRKLGRGKYSEVFEAINITNNEKVVVKILKPVKKKKIKREIKILENLRGGPNIITLADIVKDPVSRTPALVFEHVNNTDFKQLYQTLTDYDIRFYMYEILKALDYCHSMGIMHRDVKPHNVMIDHEHRKLRLIDWGLAEFYHPGQEYNVRVASRYFKGPELLVDYQMYDYSLDMWSLGCMLASMIFRKEPFFHGHDNYDQLVRIAKVLGTEDLYDYIDKYNIELDPRFNDILGRHSRKRWERFVHSENQHLVSPEALDFLDKLLRYDHQSRLTAREAMEHPYFYPVVKEQSQPCADNAVLSSGLTAAR"
-# Code a utiliser dans un fichier en amont pour récupérer les sequences 
-# de toutes les proteines
-"""
-sequences = SeqIO.parse(sys.stdin, 'uniprot-xml')
-
-nSeq =0
-DictSequences ={}
-
-
-for index, record in enumerate(sequences):
-	nSeq += 1
-	#print "index %i, sequence = %s \n"\
-	#	% (index, record.seq)
-
-
-	DictSequences ={index, record.seq}
-
-
-	sys.stdout.write("\b" * 80
-                     + 'analyzed {} sequences in {:.3f} seconds'.format(nSeq,
-                     round(time.time() - begin, 3)))
-	
-"""
-
-
-def traitementSequence(seq):
+def value(seq):
 	"""
     Run a sequence and compare to all the amino acids stored on a dictionnary 
     Then, calcul the average Pi of this sequence
@@ -134,22 +92,15 @@ def triCharge(sequence):
     :param values: a sequence, here it is oneExempleSequenceTest
     :type values: str
     """
-	if(traitementSequence(sequence) > 7):
-		PositivCharge.append(sequence)
+	if(value(sequence) > 7):
+		_PositivCharge.append(sequence)
 		print 'This sequence add on the positiv group.'
 	else:
-		NegativCharge.append(sequence)
+		_NegativCharge.append(sequence)
 		print 'This sequence add on the negativ group.'
 
 
-# MAIN
 
-#affichage(DictPhi)
-#print "Pi moyen est ",piMoyen(DictPhi)
-
-
-print "Le Pi moyen de la sequence",oneExempleSequenceTest,"\nest de : ",traitementSequence(oneExempleSequenceTest)
-triCharge(oneExempleSequenceTest)
 
 
 
