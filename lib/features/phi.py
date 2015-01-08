@@ -1,11 +1,6 @@
-# -*- coding: utf-8 -*-
-
-
-#  run but break for a bug unknown for the moment...
-
-
 import numpy as np
-from Bio import SeqIO
+
+size_values = 1
 
 DictPhi = {
 	'A' : 6.0 ,
@@ -56,6 +51,7 @@ def piMoyen(DictPhi):
 	return piM
 
 
+
 def value(seq):
 	"""
     Run a sequence and compare to all the amino acids stored on a dictionnary 
@@ -63,9 +59,10 @@ def value(seq):
     :param values: a sequence, here it is oneExempleSequenceTest
     :type values: str
     :returns the sequence average pi 
-    :rtype decimal
+    :rtype array[float]
     """
 	ListSeq = []
+	ListValues = []
 	# add the aa on the String on a List
 	for i in range(0,len(seq)):
 		ListSeq.append(seq[i])
@@ -79,12 +76,14 @@ def value(seq):
 			if (ListSeq[j] == cle):
 				if(ListSeq[j] != cle):
 					print "Cet aa n'est pas dans le stock ",ListSeq[j]
-				ListSeq[j] = values
+				#ListSeq[j] = values
+				ListValues.append(values)
 
 	# pi average of this sequence
-	piMeanSeq = np.mean(ListSeq)
+	piMeanSeq = np.mean(ListValues)
 
-	return piMeanSeq
+	return [piMeanSeq]
+
 
 def triCharge(sequence):
 	"""
