@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 from lib.progress import Progress as _Progress
 from lib.stats.k_means import k_means as _k_means
 

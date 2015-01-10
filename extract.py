@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 from Bio.SeqIO import parse as _parse
 import numpy as _np
 from sys import argv as _argv
@@ -38,7 +36,17 @@ def main(file_name, extract_lambda, features=[], n_proteins=None, log=True):
         _os.makedirs('warehouse')
     except OSError:
         # already exists
-        _os.system('rm warehouse/*.dat 2> /dev/null')
+        filelist = [
+            filename
+            for filename in _os.listdir('warehouse')
+            if filename.endswith('.dat')
+        ]
+        for filename in filelist:
+            try:
+                _os.remove('warehouse{}{}'.format(_os.path.sep, filename))
+            except FileNotFoundError:
+                # prevents error due to race condition
+                pass
 
     modules = [
         _import_module('lib.features.{}'.format(feature))
@@ -76,10 +84,3 @@ def main(file_name, extract_lambda, features=[], n_proteins=None, log=True):
         progress.finish()
 
     return _Output(n_proteins, features, extracted)
-
-if __name__ == '__main__':
-    try:
-        n_proteins = int(_argv[2])
-    except:
-        n_proteins = None
-    main(_argv[1], ['aminoacids', 'structure', 'length'], n_proteins, True)

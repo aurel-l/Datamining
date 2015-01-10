@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 import numpy as _np
 from importlib import import_module as _import_module
 from os.path import sep as _sep
@@ -78,6 +76,3 @@ def main(features=[], n_proteins=1, log=True):
         progress.finish()
 
     return _Output(matrix, informations, original_dimensions)
-
-if __name__ == '__main__':
-    main(['aminoacids', 'structure', 'length'], 20195, True)
