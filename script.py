@@ -6,7 +6,7 @@ from cluster import main as cluster
 from visualize import main as visualize
 
 file_name = 'data.xml'
-features = ['aminoacids', 'structure', 'weight', 'length']
+features = ['aminoacids', 'structure', 'phi', 'weight', 'length']
 n_clusters = 10
 
 extract_output = extract(

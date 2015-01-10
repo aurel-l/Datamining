@@ -1,106 +1,84 @@
-import numpy as np
-
 size_values = 1
-
-DictPhi = {
-	'A' : 6.0 ,
-	'G' : 6.0 ,
-	'V' : 6.0 ,
-	'L' : 6.0 ,
-	'I' : 6.1 ,
-	'P' : 6.3 ,
-	'F' : 5.5 ,
-	'W' : 5.9 ,
-	'N' : 5.4 ,
-	'Q' : 5.7 ,
-	'Y' : 5.7 , 
-	'S' : 5.7 ,
-	'T' : 6.5 ,
-	'C' : 5.0 ,
-	'M' : 5.8 ,
-	'K' : 9.8 ,
-	'R' : 10.8 ,
-	'H' : 7.6 ,
-	'D' : 3.0 ,
-	'E' : 3.2 ,
-	'X' : 6.1 ,
-	'B' : 4.2 ,
-	'Z' : 4.45 ,
-	'J' : 6.05
+_occurrences = {
+    'A': 0.078,
+    'C': 0.019,
+    'D': 0.053,
+    'E': 0.063,
+    'F': 0.039,
+    'G': 0.072,
+    'H': 0.023,
+    'I': 0.053,
+    'K': 0.059,
+    'L': 0.091,
+    'M': 0.023,
+    'N': 0.043,
+    'O': 0.000,
+    'P': 0.052,
+    'Q': 0.042,
+    'R': 0.051,
+    'S': 0.068,
+    'T': 0.059,
+    'U': 0.000,
+    'V': 0.066,
+    'W': 0.014,
+    'Y': 0.032,
+}
+_dict_phi = {
+    'A':  6.00,
+    'C':  5.07,
+    'D':  2.77,
+    'E':  3.22,
+    'F':  5.48,
+    'G':  5.97,
+    'H':  7.59,
+    'I':  6.02,
+    'K':  9.74,
+    'L':  5.98,
+    'M':  5.74,
+    'N':  5.41,
+    'O':  0,  # unknown, redefined later
+    'P':  6.30,
+    'Q':  5.95,
+    'R': 10.76,
+    'S':  5.68,
+    'T':  6.60,
+    'U':  5.47,
+    'V':  5.96,
+    'W':  5.89,
+    'Y':  5.66
 }
 
-_PositivCharge = []
-_NegativCharge = []
+
+def _fill_placeholder(aminoacids):
+    sum_values_weighted = 0.0
+    sum_weights = 0.0
+    for letter in aminoacids:
+        weight = _occurrences[letter]
+        sum_values_weighted += _dict_phi[letter] * weight
+        sum_weights += weight
+    return sum_values_weighted / sum_weights
+
+_dict_phi['B'] = _fill_placeholder('DN')
+_dict_phi['Z'] = _fill_placeholder('EQ')
+_dict_phi['J'] = _fill_placeholder('IL')
+_dict_phi['X'] = _fill_placeholder('ACDEFGHIKLMNOPQRSTUVWY')
+_dict_phi['O'] = _dict_phi['X']
 
 
-
-def piMoyen(DictPhi):
-	"""
-    Calculating the average pi of the dictionnary of 21 aa
-    to calculate X pi if it is only an average (ignoring the proportion)
-    :param values: values to be put inside the csv line
-    :type values: dictionary data type
-    :returns the average pi of the 21 aa only
-    :rtype decimal
+def value(sequence):
     """
-	Liste = []
-	for cle, values in DictPhi.items():
-		Liste.append(values)
-	piM = np.mean(Liste)
-
-	return piM
-
-
-
-def value(seq):
-	"""
-    Run a sequence and compare to all the amino acids stored on a dictionnary 
+    Run a sequence and compare to all the amino acids stored on a dictionnary
     Then, calcul the average Pi of this sequence
     :param values: a sequence, here it is oneExempleSequenceTest
     :type values: str
-    :returns the sequence average pi 
+    :returns the sequence average pi
     :rtype array[float]
     """
-	ListSeq = []
-	ListValues = []
-	# add the aa on the String on a List
-	for i in range(0,len(seq)):
-		ListSeq.append(seq[i])
-	
-	# run this new List containing the sequence aa
-	for j in range(0,len(ListSeq)):
-		# run the stored dictionary pi values 
-		for cle, values in DictPhi.items():
-			# when the aa equals the aa stored,
-			# overwriting the pi on the List
-			if (ListSeq[j] == cle):
-				if(ListSeq[j] != cle):
-					print "Cet aa n'est pas dans le stock ",ListSeq[j]
-				#ListSeq[j] = values
-				ListValues.append(values)
-
-	# pi average of this sequence
-	piMeanSeq = np.mean(ListValues)
-
-	return [piMeanSeq]
-
-
-def triCharge(sequence):
-	"""
-    Sort in two groups the sequences : Positiv or negativ
-    :param values: a sequence, here it is oneExempleSequenceTest
-    :type values: str
-    """
-	if(value(sequence) > 7):
-		_PositivCharge.append(sequence)
-		print 'This sequence add on the positiv group.'
-	else:
-		_NegativCharge.append(sequence)
-		print 'This sequence add on the negativ group.'
-
-
-
-
-
-
-
+    total_phi = 0.0
+    for letter in sequence.seq:
+        try:
+            value = _dict_phi[letter]
+        except KeyError:
+            value = _dict_phi['X']
+        total_phi += value
+    return [total_phi / len(sequence)]
