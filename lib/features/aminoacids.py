@@ -12,9 +12,9 @@ def _fill_placeholder(aminoacids):
     """
     Computes the aminoacid occurrences corresponding to a placeholder letter
     :param aminoacids: aminoacids that the placeholder replaces
-    :type values: string
-    :returns array with new aminoacid occurrences
-    :rtype numpy.ndarray
+    :type aminoacids: str
+    :returns: array with new aminoacid occurrences
+    :rtype: numpy.ndarray[numpy.float64]
     """
     indices = [_alphabet.index(aa) for aa in aminoacids]
     values = [_occurrences[i] for i in indices]
@@ -36,9 +36,9 @@ def value(sequence):
     """
     Computes the proportion of every aminoacid in a sequence
     :param sequence: sequence to be analyzed
-    :type values: Bio.SeqRecord.SeqRecord
-    :returns array containing, for every aa, its proportion in the sequence
-    :rtype numpy.ndarray[numpy.float64]
+    :type sequence: Bio.SeqRecord.SeqRecord
+    :returns: array containing, for every aa, its proportion in the sequence
+    :rtype: numpy.ndarray[numpy.float64]
     """
     results = _np.zeros(size_values, dtype=_np.float64)
     for letter in sequence.seq:

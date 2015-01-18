@@ -5,10 +5,22 @@ import numpy as _np
 from lib.progress import Progress as _Progress
 
 
-def main(
-    features, matrix, clusters, n_clusters,
-    bics, bic_range, ignored=[], log=True
-):
+def main(features, matrix, clusters, n_clusters, bics, bic_range, log=True):
+    """
+    Visualize data after clustering
+    :param features: features of the clustered data
+    :type features: list[str]
+    :param matrix: input data matrix
+    :type matrix: numpy.ndarray
+    :param clusters: cluster for each piece of data in the matrix data
+    :type clusters: numpy.ndarray
+    :param n_clusters: number of clusters
+    :type n_clusters: int
+    :param bics: Bayesian Information Criterions
+    :type bics: list[float]
+    :param log: log information to stdout
+    :type log: bool
+    """
     try:
         # tries to create a directory for the data warehouse
         _os.makedirs('visualization')
@@ -61,14 +73,13 @@ def main(
 
     # histograms
     for i in range(dimensions):
-        col = matrix[:, i]
         fig, ax = _plt.subplots()
         fig.set_size_inches(10, 10)
         ax.hist(
             [
                 _np.array([
                     cell
-                    for i, cell in enumerate(col)
+                    for i, cell in enumerate(matrix[:, i])
                     if clusters[i] == c
                 ])
                 for c in range(1, n_clusters + 1)

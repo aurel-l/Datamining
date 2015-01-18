@@ -3,6 +3,18 @@ from lib.stats.k_means import k_means as _k_means
 
 
 def main(matrix, n_clusters, log=True):
+    """
+    Performs a k-means (k-medoid variant) on the input data
+    :param matrix: input data matrix to cluster
+    :type matrix: numpy.ndarray
+    :param n_clusters: number of clusters
+    :type n_clusters: int
+    :param log: log information to stdout
+    :type log: bool
+    :returns: array containing, for every item of the matrix,
+        its corresponding cluster (from 1 to n_clusters + 1)
+    :rtype: numpy.ndarray
+    """
     length = len(matrix)
     if log:
         print(

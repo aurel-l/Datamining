@@ -15,6 +15,21 @@ class _Output:
 
 
 def main(file_name, extract_lambda, features=[], n_proteins=None, log=True):
+    """
+    Extract information from the input file
+    :param file_name: input file to parse
+    :type file_name: str
+    :param extract_lambda: lambda function to extract additional information
+    :type extract_lambda: builtins.function
+    :param features: features to extract
+    :type features: list[str]
+    :param n_proteins: number of proteins to extract, if None, extract all
+    :type n_proteins: int or None
+    :param log: log information to stdout
+    :type log: bool
+    :returns: output object with corresponding information
+    :rtype: _Output
+    """
     if not n_proteins:
         # Tries to get the number of proteins in the file if not provided
         try:

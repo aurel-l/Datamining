@@ -10,10 +10,10 @@ from lib.visualize import main as visualize
 
 parser = argparse.ArgumentParser(description='Datamining of human proteins')
 parser.add_argument(
-    'input', metavar='I', type=str, help='an input file in uniprot XML'
+    'input_file', type=str, help='an input file in uniprot XML'
 )
 parser.add_argument(
-    'features', metavar='F', type=str, nargs='+',
+    'features', type=str, nargs='*',
     help=(
         'list of features to process. ' +
         'Available: "aminoacids", "structure", "phi", "weight", "length"'
@@ -26,7 +26,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 extract_output = extract(
-    args.input,
+    args.input_file,
     extract_lambda=lambda s: s.name,
     features=args.features,
     n_proteins=args.maximum
@@ -44,7 +44,7 @@ for (i, d, f) in zip(
     )
 
 precluster_output = precluster(
-    process_output.matrix, min_clusters=10, max_clusters=110, n_replicates=5
+    process_output.matrix, min_clusters=11, max_clusters=110, n_replicates=6
 )
 
 clusters = cluster(process_output.matrix, precluster_output.best_k)

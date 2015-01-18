@@ -50,6 +50,13 @@ _dict_phi = {
 
 
 def _fill_placeholder(aminoacids):
+    """
+    Computes the pHI corresponding to a placeholder letter
+    :param aminoacids: aminoacids that the placeholder replaces
+    :type aminoacids: str
+    :returns: placeholder's pHI corresponding to an average value
+    :rtype: float
+    """
     sum_values_weighted = 0.0
     sum_weights = 0.0
     for letter in aminoacids:
@@ -62,17 +69,16 @@ _dict_phi['B'] = _fill_placeholder('DN')
 _dict_phi['Z'] = _fill_placeholder('EQ')
 _dict_phi['J'] = _fill_placeholder('IL')
 _dict_phi['X'] = _fill_placeholder('ACDEFGHIKLMNOPQRSTUVWY')
-_dict_phi['O'] = _dict_phi['X']
+_dict_phi['O'] = _dict_phi['X']  # unknown, so defaults as X
 
 
 def value(sequence):
     """
-    Run a sequence and compare to all the amino acids stored on a dictionnary
-    Then, calcul the average Pi of this sequence
-    :param values: a sequence, here it is oneExempleSequenceTest
-    :type values: str
-    :returns the sequence average pi
-    :rtype array[float]
+    Computes the pHI of a sequence
+    :param sequence: sequence to be analyzed
+    :type sequence: Bio.SeqRecord.SeqRecord
+    :returns: array containing one value, the pHI of the sequence
+    :rtype: array[float]
     """
     total_phi = 0.0
     for letter in sequence.seq:

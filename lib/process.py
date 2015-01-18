@@ -44,6 +44,17 @@ def _reduce(length, feature):
 
 
 def main(features=[], n_proteins=1, log=True):
+    """
+    Process extracted data to return a matrix of data from selected features
+    :param features: features to process
+    :type features: list[str]
+    :param n_proteins: number of proteins to process
+    :type n_proteins: int
+    :param log: log information to stdout
+    :type log: bool
+    :returns: output object with corresponding information
+    :rtype: _Output
+    """
     dimensions = len(features)
     if log:
         print('processing data from {} feature{}'.format(

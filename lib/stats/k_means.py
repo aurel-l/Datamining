@@ -12,7 +12,6 @@ class _Step:
 
 # Initialization function
 def _initialization(data, k, useElements, useQuasiRandom):
-    #barycenters = _np.zeros((k, data.shape[1]))
     if useElements:
         if useQuasiRandom:
             #k-means++
@@ -38,21 +37,6 @@ def _initialization(data, k, useElements, useQuasiRandom):
         deltaValues = maxValues - minValues
         if useQuasiRandom:
             raise('Not Implemented Yet')
-            #dimensions = data.shape[1]
-            #side = int(_np.ceil(k ** (1 / dimensions)))
-            #nHyper = side ** dimensions
-            #hypercube = _np.empty((nHyper, dimensions))
-            #iHyper = 0
-            #i = 0
-            #for comb in _np.ndindex(tuple([side for _ in range(side)])):
-            #    i = _np.round(iHyper / k
-            #
-            #    iHyper += 1
-            #not correct
-            #for i in range(data.shape[1]):
-            #    barycenters[:, i] = _np.arange(
-            #        minValue, maxValue, (maxValue - minValue) / (k + 1)
-            #    )[1:]
         else:
             #random values in value space
             barycenters = (
@@ -66,6 +50,22 @@ def _min_distance(item, others):
 
 
 def k_means(data, k, useElements=True, useQuasiRandom=False, useMedoids=False):
+    """
+    Do a k-means algorithm on the provided data
+    Yields every step of the algorithm
+    :param data: sequence to be analyzed
+    :type data: numpy.ndarray
+    :param k: number of clusters
+    :type k: int
+    :param useElements: use data elements for initialization
+    :type useElements: bool
+    :param useQuasiRandom: use quasi-random for initialization
+    :type useQuasiRandom: bool
+    :param useMedoids: use medoids for clustering (k-medoids)
+    :type useMedoids: bool
+    :returns: generator yielding every step of the k-means algorithm
+    :rtype: builtins.generator
+    """
     lenData = data.shape[0]
     # Initialization step
     barycenters = _initialization(data, k, useElements, useQuasiRandom)

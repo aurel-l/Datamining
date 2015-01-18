@@ -39,10 +39,25 @@ def _process(args):
         ).mean()
     intra = intra.mean()
 
-    return n_clusters, inter / intra
+    return n_clusters, intra / inter
 
 
 def main(matrix, min_clusters=2, max_clusters=10, n_replicates=4, log=True):
+    """
+    Computes a Bayesian Information Criterion for each k and return the best k
+    :param matrix: input data matrix
+    :type matrix: numpy.ndarray
+    :param min_clusters: minimum number of clusters
+    :type min_clusters: int
+    :param max_clusters: maximum number of clusters
+    :type max_clusters: int
+    :param n_replicates: number of replicates for each k
+    :type n_replicates: int
+    :param log: log information to stdout
+    :type log: bool
+    :returns: output object with corresponding information
+    :rtype: _Output
+    """
     pool = _Pool()
     async_results = pool.imap_unordered(
         _process,
@@ -67,6 +82,6 @@ def main(matrix, min_clusters=2, max_clusters=10, n_replicates=4, log=True):
         #_plt.plot(results)
         #_plt.show()
     return _Output(
-        _np.argmax(results) + min_clusters,
+        _np.argmin(results) + min_clusters,
         results, (min_clusters, max_clusters)
     )
