@@ -43,16 +43,15 @@ for (i, d, f) in zip(
         'in {:2}-dimensional feature "{}"'.format(d, f)
     )
 
-n_clusters = precluster(
+precluster_output = precluster(
     process_output.matrix, min_clusters=10, max_clusters=110, n_replicates=5
 )
 
-classes = cluster(process_output.matrix, n_clusters)
-
-print('class counts')
-count = [(classes == (i + 1)).sum() for i in range(n_clusters)]
-print(count)
+clusters = cluster(process_output.matrix, precluster_output.best_k)
 #for (n, c) in zip(process_output.extract, classes):
 #    print('protein {} belongs to class {}'.format(n, c))
 
-visualize(args.features, process_output.matrix, classes)
+visualize(
+    args.features, process_output.matrix, clusters,
+    precluster_output.best_k, precluster_output.bics, precluster_output.range
+)

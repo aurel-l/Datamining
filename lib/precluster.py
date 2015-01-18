@@ -6,6 +6,13 @@ from lib.stats.k_means import k_means as _k_means
 from lib.progress import Progress as _Progress
 
 
+class _Output:
+    def __init__(self, best_k, bics, range):
+        self.best_k = best_k
+        self.bics = bics
+        self.range = range
+
+
 def _process(args):
     n_clusters, matrix = args
     for step in _k_means(matrix, n_clusters, True, True, True):
@@ -59,4 +66,7 @@ def main(matrix, min_clusters=2, max_clusters=10, n_replicates=4, log=True):
         p.finish()
         #_plt.plot(results)
         #_plt.show()
-    return _np.argmax(results) + min_clusters
+    return _Output(
+        _np.argmax(results) + min_clusters,
+        results, (min_clusters, max_clusters)
+    )

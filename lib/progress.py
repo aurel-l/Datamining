@@ -2,10 +2,10 @@ from sys import stdout as _stdout
 
 
 class Progress:
-    def __init__(self, length, endValue):
+    def __init__(self, length, endValue, char='█'):
         self.template = (
-            '\b' * (length + 7) + '[\x1b[32m{:<' +
-            str(length) + '}\x1b[0m] {:3d}%'
+            '\b' * (length + 7) + char + '\x1b[32m{:<' +
+            str(length) + '}\x1b[0m' + char + ' {:3d}%'
         )
         self.length = length
         self.value = 0
@@ -13,6 +13,7 @@ class Progress:
         self.stepSize = endValue / length
         self.currentStep = 0
         self.currentPercent = 0
+        self.char = char
         self._update()
 
     def setValue(self, value):
@@ -44,6 +45,8 @@ class Progress:
     def _update(self):
         percent = int(self.value * 100 / self.endValue)
         _stdout.write(
-            self.template.format('#' * self.currentStep, self.currentPercent)
+            self.template.format(
+                self.char * self.currentStep, self.currentPercent
+            )
         )
         _stdout.flush()
