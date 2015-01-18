@@ -1,25 +1,42 @@
 #!/usr/bin/python3
 
+import argparse
+
 from extract import main as extract
 from process import main as process
 from precluster import main as precluster
 from cluster import main as cluster
 from visualize import main as visualize
 
-file_name = 'data.xml'
-features = ['aminoacids', 'structure', 'phi', 'weight', 'length']
+parser = argparse.ArgumentParser(description='Datamining of human proteins')
+parser.add_argument(
+    'input', metavar='I', type=str, help='an input file in uniprot XML'
+)
+parser.add_argument(
+    'features', metavar='F', type=str, nargs='+',
+    help=(
+        'list of features to process. ' +
+        'Available: "aminoacids", "structure", "phi", "weight", "length"'
+    )
+)
+parser.add_argument(
+    '--maximum', '-m', metavar='M', type=int, nargs='?',
+    help='define a maximum number of proteins to process'
+)
+args = parser.parse_args()
 
 extract_output = extract(
-    file_name,
+    args.input,
     extract_lambda=lambda s: s.name,
-    features=features
+    features=args.features,
+    n_proteins=args.maximum
 )
 
-process_output = process(features, extract_output.n_proteins)
+process_output = process(args.features, extract_output.n_proteins)
 for (i, d, f) in zip(
     process_output.informations,
     process_output.original_dimensions,
-    features
+    args.features
 ):
     print(
         'kept {:7.2%} of information'.format(i) +
@@ -38,4 +55,4 @@ print(count)
 #for (n, c) in zip(process_output.extract, classes):
 #    print('protein {} belongs to class {}'.format(n, c))
 
-visualize(features, process_output.matrix, classes)
+visualize(args.features, process_output.matrix, classes)
