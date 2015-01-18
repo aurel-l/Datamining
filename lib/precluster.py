@@ -1,5 +1,5 @@
 import numpy as _np
-import matplotlib.pyplot as _plt
+#import matplotlib.pyplot as _plt
 from multiprocessing import Pool as _Pool
 
 from lib.stats.k_means import k_means as _k_means
@@ -57,6 +57,6 @@ def main(matrix, min_clusters=2, max_clusters=10, n_replicates=4, log=True):
     results /= n_replicates
     if log:
         p.finish()
-        _plt.plot(results)
-        _plt.show()
+        #_plt.plot(results)
+        #_plt.show()
     return _np.argmax(results) + min_clusters

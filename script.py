@@ -2,11 +2,11 @@
 
 import argparse
 
-from extract import main as extract
-from process import main as process
-from precluster import main as precluster
-from cluster import main as cluster
-from visualize import main as visualize
+from lib.extract import main as extract
+from lib.process import main as process
+from lib.precluster import main as precluster
+from lib.cluster import main as cluster
+from lib.visualize import main as visualize
 
 parser = argparse.ArgumentParser(description='Datamining of human proteins')
 parser.add_argument(
