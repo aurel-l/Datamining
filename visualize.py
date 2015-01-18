@@ -41,7 +41,7 @@ def main(features, matrix, classes, ignored=[]):
             ax.grid(True)
             fig.tight_layout()
 
-            filename = 'visualization{}{}-{}.png'.format(
+            filename = 'visualization{}scatter-{}-{}.png'.format(
                 _os.path.sep, features[i], features[j]
             )
             _plt.savefig(filename, bbox_inches='tight', dpi=120)

@@ -2,8 +2,9 @@ import numpy as _np
 
 
 class _Step:
-    def __init__(self, classes, n_loops, changes):
+    def __init__(self, classes, barycenters, n_loops, changes):
         self.classes = classes
+        self.barycenters = barycenters
         self.n_loops = n_loops
         self.converged = (changes == 0)
         self.changes = changes
@@ -99,4 +100,4 @@ def k_means(data, k, useElements=True, useQuasiRandom=False, useMedoids=False):
                 barycenters[classIndex - 1] = bar
         # Partial result
         n_loops += 1
-        yield _Step(classes, n_loops, changes)
+        yield _Step(classes, barycenters, n_loops, changes)
