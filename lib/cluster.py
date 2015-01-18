@@ -26,7 +26,7 @@ def main(matrix, n_clusters, log=True):
         progress = _Progress(60, length)
     for step in _k_means(matrix, n_clusters, True, True, True):
         if log:
-            progress.setValue(length - step.changes)
+            progress.set_value(length - step.changes)
         if step.converged or step.n_loops >= 80:
             if log:
                 progress.finish(step.converged)
