@@ -23,6 +23,10 @@ parser.add_argument(
     '--maximum', '-m', metavar='M', type=int, nargs='?',
     help='define a maximum number of proteins to process'
 )
+parser.add_argument(
+    '--output-file', '-o', metavar='O', type=str, nargs='?',
+    help='optional output file for csv formatted cluster information'
+)
 args = parser.parse_args()
 
 extract_output = extract(
@@ -39,19 +43,23 @@ for (i, d, f) in zip(
     args.features
 ):
     print(
-        'kept {:7.2%} of information'.format(i) +
+        'kept {:7.2%} of information '.format(i) +
         'in {:2}-dimensional feature "{}"'.format(d, f)
     )
 
 precluster_output = precluster(
-    process_output.matrix, min_clusters=11, max_clusters=110, n_replicates=6
+    process_output.matrix, min_clusters=10, max_clusters=29, n_replicates=6
 )
 
 clusters = cluster(process_output.matrix, precluster_output.best_k)
-#for (n, c) in zip(process_output.extract, classes):
-#    print('protein {} belongs to class {}'.format(n, c))
 
 visualize(
     args.features, process_output.matrix, clusters,
     precluster_output.best_k, precluster_output.bics, precluster_output.range
 )
+
+if args.output_file:
+    f = open(args.output_file, 'w')
+    f.write('sequence name\tcluster\n')
+    for (n, c) in zip(extract_output.extract, clusters):
+        f.write('{}\t{}\n'.format(n, c))

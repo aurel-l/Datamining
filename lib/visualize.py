@@ -55,7 +55,7 @@ def main(features, matrix, clusters, n_clusters, bics, bic_range, log=True):
             fig.set_size_inches(10, 10)
             ax.scatter(
                 matrix[:, i], matrix[:, j], c=clusters,
-                s=25, marker='.', lw=0
+                s=35, marker='.', lw=0
             )
 
             ax.set_xlabel(features[i])
