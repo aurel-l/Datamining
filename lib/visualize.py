@@ -8,7 +8,7 @@ import numpy as _np
 from lib.progress import Progress as _Progress
 
 
-def main(features, matrix, clusters, n_clusters, bics, bic_range, log=True):
+def main(features, matrix, clusters, n_clusters, ics, ic_range, log=True):
     """
     Visualize data after clustering
     :param features: features of the clustered data
@@ -19,8 +19,10 @@ def main(features, matrix, clusters, n_clusters, bics, bic_range, log=True):
     :type clusters: numpy.ndarray
     :param n_clusters: number of clusters
     :type n_clusters: int
-    :param bics: Bayesian Information Criterions
-    :type bics: list[float]
+    :param ics: Information Criterions
+    :type ics: list[float]
+    :param ic_range: minimum and maximum of k used for IC computation
+    :type ics: tuple(int)
     :param log: log information to stdout
     :type log: bool
     """
@@ -105,19 +107,19 @@ def main(features, matrix, clusters, n_clusters, bics, bic_range, log=True):
         if log:
             p.increment()
 
-    # BIC
+    # Information Criterion
     fig, ax = _plt.subplots()
     fig.set_size_inches(10, 10)
-    ax.plot(range(bic_range[0], bic_range[1] + 1), bics)
+    ax.plot(range(ic_range[0], ic_range[1] + 1), ics)
 
     ax.set_xlabel('k')
-    ax.set_ylabel('BIC')
-    ax.set_title('BIC for different values of k')
+    ax.set_ylabel('Information Criterion')
+    ax.set_title('Information Criterion for different values of k')
 
     ax.grid(True)
     fig.tight_layout()
 
-    filename = 'visualization{}bics.png'.format(_os.path.sep, features[i])
+    filename = 'visualization{}ics.png'.format(_os.path.sep, features[i])
     _plt.savefig(filename, bbox_inches='tight', dpi=120)
     if log:
         p.increment()

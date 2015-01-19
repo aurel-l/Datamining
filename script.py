@@ -55,7 +55,7 @@ clusters = cluster(process_output.matrix, precluster_output.best_k)
 
 visualize(
     args.features, process_output.matrix, clusters,
-    precluster_output.best_k, precluster_output.bics, precluster_output.range
+    precluster_output.best_k, precluster_output.ics, precluster_output.range
 )
 
 if args.output_file:

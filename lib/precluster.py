@@ -7,9 +7,9 @@ from lib.progress import Progress as _Progress
 
 
 class _Output:
-    def __init__(self, best_k, bics, range):
+    def __init__(self, best_k, ics, range):
         self.best_k = best_k
-        self.bics = bics
+        self.ics = ics
         self.range = range
 
 
